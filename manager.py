@@ -75,6 +75,8 @@ class manager :
     def dot_generator(self):
         temp = "digraph \"device\"{ graph [rankdir=LR] node [shape=circle]"
         end = '}'
+        for a in self.actuators:
+            temp = f"{temp} {a.name} [color=black style=filled shape=doublecircle label=\"\" width=0.30]"
         for t in self.thresholds:
             temp = f"{temp} {t.name} [label =\"{t.threshold}\"]"
         for w in self.wires:
