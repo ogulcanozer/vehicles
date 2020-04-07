@@ -8,7 +8,7 @@
  ## 1. Simple threshold device for right to left movement detection:
 
 ![logo](./right2left/right2left_movement.png?raw=true)
-![logo](./right2left/r2l_org.png?raw=true)
+![logo](./right2left/r2l_org.jpg?raw=true)
 [1] p.36 Figure 13.
 
 
