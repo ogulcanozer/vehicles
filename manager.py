@@ -32,7 +32,7 @@ class manager :
         self.update_a()
         self.time = self.time + 1
 
-    #for debug
+ 
     def update_s(self):
         for s in self.sensors:
             s.update()        

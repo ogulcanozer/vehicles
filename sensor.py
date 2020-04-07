@@ -24,8 +24,6 @@ class sensor :
         inputs = nd.flatten(np.array(inputs)).tolist()
         print(inputs)
         for (s,i) in zip(self.inputs, inputs):
-                print('I : ' + str(i))
                 if i != 0:
-                    print('signaled')
                     s.signal()
     
