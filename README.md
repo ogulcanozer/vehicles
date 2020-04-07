@@ -6,10 +6,12 @@
  As a bonus a graph generator is implemented to visualize the created threshold devices. Nodes and the connections in the device are outputted in DOT language and rendered with graphviz.
 
  ## 1. Simple threshold device for right to left movement detection:
+Graphviz Output             |  Original
+:-------------------------:|:-------------------------:
+<img src="./right2left/right2left_movement.png" width="400">  |  <img src="./right2left/r2l_org.JPG" width="400">
+||[1] p.36 Figure 13.
 
-![logo](./right2left/right2left_movement.png?raw=true)
-![logo](./right2left/r2l_org.jpg?raw=true)
-[1] p.36 Figure 13.
+
 
 
 
