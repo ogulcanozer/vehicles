@@ -13,8 +13,6 @@ class signal_input :
         self.sensor = sensor
 
     def signal(self):
-        # for c in self.consumers:
-        #     c.signal()
         for (c,i) in zip(self.consumers,self.type):
             if i == 0:
                 c.signal()

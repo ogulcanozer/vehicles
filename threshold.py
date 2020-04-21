@@ -23,10 +23,7 @@ class threshold :
         producer.consumers.append(t_wire)
         producer.type.append(type)
         self.manager.wires.append(t_wire)
-        #################################
-        # self.producers.append(producer)
-        # producer.consumers.append(self)
-        # producer.type.append(type)
+
 
     def add_consumer(self, consumer, type = 0):
         t_wire = wire(self, consumer, type)
@@ -34,16 +31,12 @@ class threshold :
         self.type.append(type)
         consumer.producers.append(t_wire)
         self.manager.wires.append(t_wire)
-        #################################
-        # self.consumers.append(consumer)
-        # self.type.append(type)
-        # consumer.producers.append(self)
+
     
     def signal(self):
         self.current = self.current + 1
 
     def inhibit(self):
-        #if self.current > 0:
         self.current = self.current - 1
     
     def update(self, verbose = True):
@@ -58,8 +51,7 @@ class threshold :
                         c.inhibit()
                     if verbose:
                         print(self.name + tmp + c.name)
-                #self.current = 0
-        self.current = 0 # --> Correct version ? 
+        self.current = 0 
 
     def update_threshold(self, t):
         assert t > 0, "Enter a valid threshold"

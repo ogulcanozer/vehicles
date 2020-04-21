@@ -25,7 +25,7 @@ class manager :
         else:
             self.thresholds.append(e)
     
-    def update(self):# Add detailed verbose option for each update.
+    def update(self):
         #self.update_s()
         self.update_t()
         self.update_w()
