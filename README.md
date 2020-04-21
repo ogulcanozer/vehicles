@@ -142,7 +142,7 @@ src = Source(dot)
 src.render(filename='tutorial', directory='graph_output//tutorial', format='png', cleanup=True) 
 ```
 
-`src`
-<img src="./graph_output/tutorial/tutorial.png" width="400">
+
+<img src="./graph_output/tutorial/tutorial.png" width="250">
 
 Other examples can be found in the notebooks.
