@@ -22,7 +22,7 @@ The most basic threshold device is made up from a manager object, sensor, thresh
 
 The first thing we need to do is to import the vehicle so that we can use all the elements.
 
-*`import vehicles as v`
+* `import vehicles as v`
 
 ### Manager
 
