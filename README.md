@@ -129,4 +129,20 @@ thr.add_consumer(act,0)
 sns.feed([[1]])
 mng.update()
 ```
+After creating our device we can get its graph output
+
+```
+from graphviz import Source, render
+
+#Generate the DOT representation of the manager/t. device
+dot = mng.dot_generator()
+#Read the DOT file with graphviz
+src = Source(dot)
+#Create and save the graph
+src.render(filename='tutorial', directory='graph_output//tutorial', format='png', cleanup=True) 
+```
+
+`src`
+<img src="./graph_output/tutorial/tutorial.png" width="400">
+
 Other examples can be found in the notebooks.
