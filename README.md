@@ -5,9 +5,9 @@
  ## 1. Example threshold device for right to left movement detection(1) and three pulse detection(2):
 Graphviz Output             |  Original
 :-------------------------:|:-------------------------:
-<img src="./right2left/right2left_movement.png" width="400">  |  <img src="./right2left/r2l_org.JPG" width="400">
+<img src="./graph_output/right2left/right2left_movement.png" width="400">  |  <img src="./graph_output/right2left/r2l_org.JPG" width="400">
 ||[1] p.36 Figure 13.
-<img src="./3pulse-demo/3p_network.png" width="400">  |  <img src="./3pulse-demo/3pulse.png" width="400">
+<img src="./graph_output/3pulse-demo/3p_network.png" width="400">  |  <img src="./graph_output/3pulse-demo/3pulse.png" width="400">
 ||[1] p.23 Figure 10b.
 
 
