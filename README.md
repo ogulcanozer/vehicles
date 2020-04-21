@@ -20,6 +20,9 @@ Graphviz Output             |  Original
 
 The most basic threshold device is made up from a manager object, sensor, threshold node and an output (wire elements are automatically created when two elements are connected). After an input is provided, the manager`s update function is called and the input is propagated throughout the device. Since the system architecture is serial and each element needs to perform calculations that may have to be done concurrently, the update function is made up from smaller updates.
 
+The first thing we need to do is to import the vehicle so that we can use all the elements.
+
+*`import vehicles as v`
 
 ### Manager
 
@@ -39,7 +42,7 @@ Functions :
 
 The only parameter a manager object has is the verbose option which is set True by default.
 
-* `mng = manager(verbose = bool)` — This option provides information about the device after each update operation.
+* `mng = v.manager(verbose = bool)` — This option provides information about the device after each update operation.
 
 ```
 >>> mng.update()
@@ -69,11 +72,13 @@ Functions :
 * `self.feed([input])` — Feeds the input array to the appropriate signal inputs.
 
 Sensor object requires a manager object and a size/dimension as its parameters.
-* `sns = sensor(manager, (int, int))`
+* `sns = v.sensor(manager, (int, int))`
 
 ```
-mng = manager(verbose = True)
-sns = sens(mng,(1,5))
+import vehicles as v
+
+mng = v.manager(verbose = True)
+sns = v.sensor(mng,(1,5))
 ...
 
 sns.feed([0,0,0,0,0])
@@ -89,12 +94,15 @@ Functions :
 * `self.add_consumer(consumer, type = int[0-1])` — Adds the provided element as a consumer. Type determines if the output is going to "signal" or "inhibit" the consumer. The type value in this case is used to create a wire with the desired type between the self and its consumer. Signaling and inhibition is done by wires, threshold nodes only output 1 or 0 for activated or not activated. 
 
 Threshold object requires a manager object and a threshold value as its parameters.
-* `thr = threshold(manager, int)`
+* `thr = v.threshold(manager, int)`
 
 ```
-mng = manager(verbose = True)
-sns = sens(mng,(1,1))
-thr = threshold(mng,1)
+import vehicles as v
+
+mng = v.manager(verbose = True)
+sns = v.sensor(mng,(1,1))
+thr = v.threshold(mng,1)
+
 sns.add_consumer(thr,0,(0,0))
 ```
 
@@ -103,14 +111,18 @@ sns.add_consumer(thr,0,(0,0))
 Actuator object is currently a placeholder. It is used as a simple output method. Actuators only print "ACTIVATED" if their producers send a signal. 
 
 Actuator object only requires a manager object as its parameter.
-* `act = actuator(manager)`
+* `act = v.actuator(manager)`
 
 Now we have a working threshold device
 
 ```
-mng = manager(verbose = True)
-sns = sens(mng,(1,1))
-thr = threshold(mng,1)
+import vehicles as v
+
+mng = v.manager(verbose = True)
+sns = v.sensor(mng,(1,1))
+thr = v.threshold(mng,1)
+act = v.actuator(mng)
+
 sns.add_consumer(thr,0,(0,0))
 thr.add_consumer(act,0)
 
