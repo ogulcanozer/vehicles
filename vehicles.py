@@ -1,8 +1,5 @@
 import string
 import random
-# import sensor 
-# import actuator
-# from signal_input import signal_input
 from numpy import ndarray as nd
 import numpy as np
 
@@ -12,6 +9,7 @@ class manager :
     actuators = []
     thresholds = []
     wires = []
+    m_wires = []
 
     def __init__(self, verbose = True):
         self.name = 'man_'+''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(4))
@@ -32,6 +30,7 @@ class manager :
     def update(self):
         #self.update_s()
         self.update_t()
+        self.update_m()
         self.update_w()
         self.update_a()
         self.time = self.time + 1
@@ -54,6 +53,9 @@ class manager :
             t.update(self.verbose)
         if self.verbose:
             print(f"Thresholds at time {self.time} after threshold update: \n{self.get_thresholds()}")
+    def update_m(self):
+        for m in self.m_wires:
+            m.update()        
     def update_a(self):
         for a in self.actuators:
             a.update()
@@ -246,3 +248,72 @@ class actuator :
         if self.current > 0 :
             print(self.name + ' : ACTIVATED ')
         self.current = 0
+
+class mnemotrix :
+
+    def __init__(self, t1 , t2 , time_step = 2, THR_RES = 2, MAX_RES = 5):
+        self.name = 'mne_'+''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(4))
+        self.t1 = t1
+        self.t2 = t2
+        self.time_step = time_step
+        self.THR_RES = THR_RES
+        self.MAX_RES = MAX_RES
+        self.res_time = 0
+        self.cur_res = self.MAX_RES
+        self.t_input = [ 0, 0]
+        self.connection(self.t1, self.t2)
+
+    def res_update(self):
+        if self.cur_res < self.MAX_RES:
+            if self.res_time == self.time_step:
+                self.cur_res += 1
+                self.res_time = 0
+                return
+            else:
+                self.res_time += 1         
+
+    def connection(self, t1, t2):
+        
+        self.t1.manager.m_wires.append(self)
+
+        self.t1.consumers.append(self)
+        self.t1.type.append(0)
+        self.t1.producers.append(self)
+
+        self.t2.consumers.append(self)
+        self.t2.type.append(1)
+        self.t2.producers.append(self)
+    # def add_producer(self, producer, type = 0):
+    #     self.producers.append(t_wire)
+    #     producer.consumers.append(t_wire)
+    #     producer.type.append(type)
+    #     self.manager.wires.append(t_wire)
+
+
+    def signal(self):
+        self.t_input[0] = 1
+
+    def inhibit(self):
+        self.t_input[1] = 1
+    
+    def update(self, verbose = True):
+        print(f"Mnemotrix {self.name} inputs : {self.t_input}, Current resistance : ({self.cur_res}/{self.THR_RES}) Resistance update time : ({self.res_time}/{self.time_step}) ")
+
+        t_inp = sum(self.t_input)
+        if  t_inp != 0:
+            if self.t_input[0] == 1:
+                if self.cur_res <= self.THR_RES:
+                    self.t1.signal()
+                    if verbose:
+                        print(f'{self.t1.name} signaled {self.t2.name} with :  {self.name}')
+            if self.t_input[1] == 1:
+                if self.cur_res <= self.THR_RES:
+                    self.t2.signal()
+                    if verbose:
+                        print(f'{self.t2.name} signaled {self.t1.name} with :  {self.name}')
+            if t_inp == 2 :
+                self.cur_res -= 1
+                self.res_time = 0
+        self.res_update()
+        print(f"Mnemotrix {self.name} , Current resistance : ({self.cur_res}/{self.THR_RES}) Resistance update time : ({self.res_time}/{self.time_step}) after MNE update.")
+        self.t_input = [ 0, 0]
