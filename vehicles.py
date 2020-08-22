@@ -138,20 +138,20 @@ class threshold:
         consumer.producers.append(t_wire)
         self.manager.wires.append(t_wire)
 
-    def signal(self):
-        self.current = self.current + 1
+    def signal(self, signal_input):
+        self.current = self.current + signal_input
 
-    def inhibit(self):
-        self.current = self.current - 1
+    def inhibit(self, signal_input):
+        self.current = self.current - signal_input
 
-    def activate(self):
+    def activate(self, signal_input):
         for (c, i) in zip(self.consumers, self.type):
             if i == 0:
                 tmp = ' --> '
-                c.signal()
+                c.signal(signal_input)
             else:
                 tmp = ' --| '
-                c.inhibit()
+                c.inhibit(signal_input)
             if self.verbose:
                 print(self.name + tmp + c.name)
         self.current = 0
@@ -162,10 +162,10 @@ class threshold:
                 for (c, i) in zip(self.consumers, self.type):
                     if i == 0:
                         tmp = ' --> '
-                        c.signal()
+                        c.signal(self.current)
                     else:
                         tmp = ' --| '
-                        c.inhibit()
+                        c.inhibit(self.current)
                     if self.verbose:
                         print(self.name + tmp + c.name)
         self.current = 0
@@ -184,12 +184,12 @@ class signal_input:
         self.type = []
         self.sensor = sensor
 
-    def signal(self):
+    def signal(self, signal_input):
         for (c, i) in zip(self.consumers, self.type):
             if i == 0:
-                c.signal()
+                c.signal(signal_input)
             else:
-                c.inhibit()
+                c.inhibit(signal_input)
         tmg = self.consumers[0].manager
         if tmg.verbose:
             print(f"Thresholds at time {tmg.time} after the signal:\
@@ -214,15 +214,15 @@ class sensor:
             dimension[0] * dimension[1])]
 
     def add_consumer(self, consumer, type=0, position=(0, 0)):
-        self.inputs[(position[0] * self.dimension[1]
-        ) + position[1]].add_consumer(consumer, type)
+        self.inputs[(position[0] * self.dimension[1])
+                    + position[1]].add_consumer(consumer, type)
 
     def feed(self, inputs):
         inputs = nd.flatten(np.array(inputs)).tolist()
         print(inputs)
         for (s, i) in zip(self.inputs, inputs):
             if i != 0:
-                s.signal()
+                s.signal(i)
 
 
 class wire:
@@ -235,19 +235,18 @@ class wire:
         self.current = 0
         self.type = type
 
-    def signal(self):
-        self.current = self.current + 1
+    def signal(self, signal_input):
+        self.current = self.current + signal_input
 
-    def inhibit(self):
-        # if self.current > 0:
-        self.current = self.current - 1
+    def inhibit(self, signal_input):
+        self.current = self.current - signal_input
 
     def update(self, verbose=True):
         if self.current > 0:
             tmp = ' --> '
-            self.consumer.signal()
+            self.consumer.signal(self.current)
         elif self.current < 0:
-            self.consumer.inhibit()
+            self.consumer.inhibit(self.current)
             tmp = ' --| '
         else:
             tmp = ' --- '
@@ -271,8 +270,8 @@ class actuator:
     def add_producer(self, producer):
         self.producers.append(producer)
 
-    def signal(self):
-        self.current = self.current + 1
+    def signal(self, signal_input):
+        self.current = self.current + signal_input
 
     def update(self):
         if self.current > 0:
